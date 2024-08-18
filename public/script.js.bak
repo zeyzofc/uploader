@@ -1,0 +1,74 @@
+const MAX_FILE_SIZE_MB = 30;
+const MAX_FILE_SIZE = MAX_FILE_SIZE_MB * 1024 * 1024;
+
+const fileInput = document.getElementById('fileInput');
+fileInput.addEventListener('change', () => {
+    const selectedFile = fileInput.files[0];
+    if (selectedFile && selectedFile.size > MAX_FILE_SIZE) {
+        fileInput.value = null;
+        alert(`File size exceeds the limit of ${MAX_FILE_SIZE_MB}MB`);
+    }
+});
+
+document.querySelector('.btn').addEventListener('click', () => {
+    const fileInput = document.getElementById('fileInput');
+    const file = fileInput.files[0];
+    
+    if (!file) {
+        alert('Please select a file to upload.');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    fetch('/upload', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            const resultDiv = document.getElementById('result');
+            const fileUrl = data.url;
+
+            // Clear previous results
+            resultDiv.innerHTML = '';
+
+            const linkContainer = document.createElement('div');
+            linkContainer.classList.add('result-link-container');
+
+            const link = document.createElement('a');
+            link.href = fileUrl;
+            link.textContent = fileUrl;
+            link.classList.add('result-link');
+            link.target = '_blank';
+            linkContainer.appendChild(link);
+
+            const copyButton = document.createElement('button');
+            copyButton.textContent = 'Copy';
+            copyButton.classList.add('copy-button');
+            copyButton.addEventListener('click', () => {
+                copyToClipboard(fileUrl);
+                copyButton.textContent = 'Copied!';
+                setTimeout(() => {
+                    copyButton.textContent = 'Copy';
+                }, 2000);
+            });
+            linkContainer.appendChild(copyButton);
+
+            resultDiv.appendChild(linkContainer);
+        })
+        .catch(error => {
+            console.error('Error uploading file:', error);
+        });
+});
+
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text)
+        .then(() => {
+            console.log('Text copied to clipboard: ' + text);
+        })
+        .catch(err => {
+            console.error('Error copying text to clipboard: ', err);
+        });
+}

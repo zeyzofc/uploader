@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zeyz Cloud | Free File Hosting</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://host.zanixon.my.id/static/styles/style.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
+        body {
+            font-family: 'Space Grotesk', Helvetica, Arial, sans-serif;
+            color: #010101;
+            margin: 0;
+        }
+
+        .bg {
+            background-image: url('https://host.zanixon.my.id/file/wRXqS5WjiE.jpeg');
+            background-position: center;
+            background-size: cover;
+            min-height: 100vh;
+            width: 100vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .panel {
+            background-image: linear-gradient(to bottom right, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 100%);
+            backdrop-filter: blur(6px);
+            border-radius: 12px;
+            width: 85%;
+            border-top: 1px solid rgba(255, 255, 255, 0.5);
+            border-left: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 60px;
+            box-shadow: rgba(255, 255, 255, 0.5) -20px -20px 45px inset, rgba(0, 0, 0, 0.1) 10px 10px 20px, rgba(0, 0, 0, 0.06) 5px 5px 10px;
+            position: relative;
+            margin: 5em;
+        }
+
+        .panel h1 {
+            font-size: 2.3em;
+            font-family: Outfit;
+            font-weight: 800;
+            background: linear-gradient(to right, #01BDFF 0%, #03FFF7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .panel .card__text {
+            color: #010101;
+        }
+
+        .panel .button, .panel .error {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            text-align: center;
+            width: 100%;
+            margin-bottom: 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .panel .button:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .panel .error {
+            color: #fff;
+            background-image: linear-gradient(to bottom right, rgba(255, 2, 0, 0.3) 0%, rgba(255, 255, 255, 0.1) 100%);
+            box-shadow: rgba(255, 2, 0, 0.5) -20px -20px 45px inset, rgba(0, 0, 0, 0.1) 10px 10px 20px, rgba(0, 0, 0, 0.06) 5px 5px 10px;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            padding: 0.7rem;
+        }
+
+        .panel input[type="file"] {
+            display: none;
+        }
+
+        .panel input[type="text"] {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            border: none;
+            color: #010101;
+            height: 0.9rem;
+        }
+
+        .panel label {
+            display: block;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            cursor: pointer;
+            color: #010101;
+            transition: background-color 0.3s;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .panel label:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .drop-zone {
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            cursor: pointer;
+            color: #fff;
+            transition: border-color 0.3s;
+            text-align: center;
+        }
+
+        .drop-zone:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .drop-zone.dragover {
+            border-color: rgba(255, 255, 255, 0.4);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .list {
+            display: flex;
+            justify-content: center;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        .list a {
+            margin: 0 10px;
+            font-size: 1.5rem;
+            color: rgba(0, 0, 0, 0.5);
+            text-decoration: none;
+        }
+
+        .result {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .result-link-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .result-link {
+            margin-right: 10px;
+        }
+
+        .copy-button {
+            padding: 5px 10px;
+            border: none;
+            background-color: #01BDFF;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .copy-button:active {
+            background-color: #03FFF7;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg">
+        <section class="panel">
+            <h1>Zeyz Cloud</h1>
+            <div class="card__text">
+                <p>Layanan cloud file hosting gratis tanpa batas jumlah upload, hosting file secara anonim tanpa diketahui dan terlacak, mendukung segala jenis tipe ekstensi file.</p>
+                <p>Donate gw bree, udah w sediain nih web tanpa batas upload, tanpa filter, dan file nya pun gk bakal gw hapus walau lu upload aneh-aneh :)</p>
+            </div>
+            <form id="file-upload-form" action="/" method="post" enctype="multipart/form-data">
+                <label for="file-upload" id="file-drag">
+                    <div id="dropzone" class="drop-zone">
+                        <div id="start">
+                            <i class="fa fa-download" aria-hidden="true"></i>
+                            <div id="file-name" class="card__text">Pilih atau drop file disini</div>
+                        </div>
+                    </div>
+                    <input id="file-upload" type="file" name="file" accept="*/*" />
+                </label>
+                <br>
+                <button type="submit" id="file-upload-btn" class="button card__text">Upload</button>
+            </form>
+            <ul class="list">
+                <li><a href="https://saweria.co/irwanshaleh34">Donasi</a></li>
+                <li><a href="">API</a></li>
+                <li><a href="https://github.com/zeyzofc">Creator</a></li>
+            </ul>
+        </section>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+    $(document).ready(function() {
+        const MAX_FILE_SIZE_MB = 1024; // 1GB
+        const MAX_FILE_SIZE = MAX_FILE_SIZE_MB * 1024 * 1024;
+
+        const fileInput = $('#file-upload');
+        const dropzone = $('#dropzone');
+        const fileNameDisplay = $('#file-name');
+
+        // Handle file selection
+        fileInput.on('change', function() {
+            const file = this.files[0];
+            if (file) {
+                if (file.size > MAX_FILE_SIZE) {
+                    fileInput.val(null);
+                    fileNameDisplay.text('Pilih atau drop file disini');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'File Too Large',
+                        text: `File size exceeds the limit of ${MAX_FILE_SIZE_MB}MB.`
+                    });
+                    return;
+                }
+                fileNameDisplay.text(file.name);
+            } else {
+                fileNameDisplay.text('Pilih atau drop file disini');
+            }
+        });
+
+        // Handle drag and drop
+        dropzone.on('dragover', function(e) {
+            e.preventDefault();
+            $(this).addClass('dragover');
+        });
+
+        dropzone.on('dragleave', function() {
+            $(this).removeClass('dragover');
+        });
+
+        dropzone.on('drop', function(e) {
+            e.preventDefault();
+            $(this).removeClass('dragover');
+            const files = e.originalEvent.dataTransfer.files;
+            if (files.length > 0) {
+                const file = files[0];
+                if (file.size > MAX_FILE_SIZE) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'File Too Large',
+                        text: `File size exceeds the limit of ${MAX_FILE_SIZE_MB}MB.`
+                    });
+                    return;
+                }
+                fileInput[0].files = files;
+                fileNameDisplay.text(file.name);
+            }
+        });
+
+        // Handle form submission
+        $('#file-upload-form').on('submit', function(e) {
+            e.preventDefault();
+            const file = fileInput[0].files[0];
+
+            if (!file) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'No File Selected',
+                    text: 'Please select a file to upload.'
+                });
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            Swal.fire({
+                title: 'Uploading...',
+                html: '<div id="progress-container" style="width: 100%;"><div id="progress-bar" style="width: 0%; height: 25px; background-color: #3085d6;"></div></div>',
+                showConfirmButton: false,
+                allowOutsideClick: false
+            });
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/upload', true);
+
+            // Update progress bar
+            xhr.upload.onprogress = function(event) {
+                if (event.lengthComputable) {
+                    const percentComplete = (event.loaded / event.total) * 100;
+                    $('#progress-bar').css('width', percentComplete + '%');
+                }
+            };
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    const data = JSON.parse(xhr.responseText);
+                    const fileUrl = data.url;
+
+                    Swal.fire({
+                        title: 'Upload Successful',
+                        text: 'File uploaded successfully!',
+                        icon: 'success',
+                        showConfirmButton: true,
+                        html: `
+                            <p>File uploaded successfully!</p>
+                            <input id="file-url" type="text" value="${fileUrl}" readonly style="width: 100%; margin-bottom: 10px;">
+                            <button id="copy-url" class="swal2-confirm swal2-styled" style="background-color: #3085d6; color: white; border: none; padding: 10px; cursor: pointer;">Copy URL</button>
+                        `,
+                        didOpen: () => {
+                            // Handle copy button click
+                            const copyButton = document.getElementById('copy-url');
+                            copyButton.addEventListener('click', () => {
+                                const urlInput = document.getElementById('file-url');
+                                navigator.clipboard.writeText(urlInput.value)
+                                    .then(() => {
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Copied!',
+                                            text: 'URL has been copied to clipboard.'
+                                        });
+                                    })
+                                    .catch(err => {
+                                        console.error('Error copying text to clipboard: ', err);
+                                    });
+                            });
+                        }
+                    }).then(() => {
+                        // Refresh the page after 1.5 seconds
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1500);
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Upload Failed',
+                        text: 'There was an error uploading the file.'
+                    });
+                }
+            };
+
+            xhr.send(formData);
+        });
+    });
+</script>
+
+
+</body>
+</html>
+
+                    
