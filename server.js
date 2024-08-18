@@ -2,11 +2,12 @@ const express = require('express');
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const path = require('path');
 const multer = require('multer');
+const crypto = require('crypto');
 const app = express();
 const dotenv = require('dotenv');
 
-const MAX_FILE_SIZE_MB = 1024
-const PORT = process.env.EXPRESS_PORT || 8080
+const MAX_FILE_SIZE_MB = 1024;
+const PORT = process.env.EXPRESS_PORT || 8080;
 
 // Load environment variables from .env file
 dotenv.config();
@@ -15,8 +16,8 @@ dotenv.config();
 const s3Client = new S3Client({
     region: 'ap-south-1', // Replace with your S3 region
     credentials: {
-        accessKeyId: 'AKIAX2CEITJQSZG5ADDE', // Replace with your access key
-        secretAccessKey: '5zaRojkfn9OlqfAwPbACs/V3SDVMFJT3Z8W0YVOW', // Replace with your secret key
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID, // Use environment variables for credentials
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
     },
 });
 
@@ -25,16 +26,20 @@ const storage = multer.memoryStorage();
 const upload = multer({
     storage: storage,
     limits: {
-        fileSize: MAX_FILE_SIZE_MB * 1024 * 1024
+        fileSize: MAX_FILE_SIZE_MB * 1024 * 1024,
     },
 }).single('file');
 
 // Serve static files from the "public" directory
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Function to generate a random 8-character string
+const generateRandomFileName = () => {
+    return crypto.randomBytes(4).toString('hex'); // Generates an 8-character hex string
+};
+
 // Handle file upload POST request
 app.post('/upload', (req, res) => {
-
     upload(req, res, (err) => {
         if (err instanceof multer.MulterError) {
             // Multer error occurred
@@ -49,11 +54,12 @@ app.post('/upload', (req, res) => {
         }
 
         const file = req.file;
+        const randomFileName = generateRandomFileName() + path.extname(file.originalname); // Append original file extension
 
         // Set up the parameters for the S3 upload
         const params = {
             Bucket: 'ffs-2',
-            Key: file.originalname,
+            Key: randomFileName,
             Body: file.buffer,
             ACL: 'public-read', // Set ACL to public-read
         };
