@@ -65,7 +65,7 @@ app.post('/upload', (req, res) => {
         s3Client.send(new PutObjectCommand(params))
             .then(data => {
                 const fileUrl = `https://${params.Bucket}.s3.amazonaws.com/${params.Key}`;
-                res.json({ url: fileUrl });
+                res.json({ creator: "zeyz", url: fileUrl });
             })
             .catch(err => {
                 console.error('Error uploading file to S3:', err);
